@@ -1,6 +1,7 @@
 import { calendarEventConfig } from "@/config/weddingConfig";
 
-const formatGoogleDate = (dateTime: string) => dateTime.replace(/[-:]/g, "").replace(".000", "");
+const formatUtcDate = (dateTime: string) =>
+  new Date(dateTime).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
 export const createGoogleCalendarUrl = () => {
   const params = new URLSearchParams({
@@ -8,7 +9,7 @@ export const createGoogleCalendarUrl = () => {
     text: calendarEventConfig.title,
     details: calendarEventConfig.description,
     location: calendarEventConfig.location,
-    dates: `${formatGoogleDate(calendarEventConfig.startDateTime)}/${formatGoogleDate(
+    dates: `${formatUtcDate(calendarEventConfig.startDateTime)}/${formatUtcDate(
       calendarEventConfig.endDateTime
     )}`
   });
@@ -25,11 +26,12 @@ export const createIcsFile = () => {
     "VERSION:2.0",
     "PRODID:-//MichaelJuliana//Wedding Invitation//ES",
     "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
     "BEGIN:VEVENT",
     `UID:${uid}`,
     `DTSTAMP:${now}`,
-    `DTSTART:${calendarEventConfig.startDateTime.replace(/[-:]/g, "")}`,
-    `DTEND:${calendarEventConfig.endDateTime.replace(/[-:]/g, "")}`,
+    `DTSTART:${formatUtcDate(calendarEventConfig.startDateTime)}`,
+    `DTEND:${formatUtcDate(calendarEventConfig.endDateTime)}`,
     `SUMMARY:${calendarEventConfig.title}`,
     `DESCRIPTION:${calendarEventConfig.description}`,
     `LOCATION:${calendarEventConfig.location}`,

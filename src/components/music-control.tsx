@@ -12,6 +12,8 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
   const [isMuted, setIsMuted] = useState(false);
   const [isAvailable, setIsAvailable] = useState(enabled);
   const [hasStarted, setHasStarted] = useState(false);
+  const [requiresGesture, setRequiresGesture] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
 
   useEffect(() => {
     if (!enabled) {
@@ -35,24 +37,42 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
         await audio.play();
         setIsMuted(false);
         setHasStarted(true);
+        setRequiresGesture(false);
       } catch {
-        try {
-          audio.muted = true;
-          await audio.play();
-          setIsMuted(true);
-          setHasStarted(true);
-        } catch {
-          // Some browsers block autoplay without user interaction.
-          // Keep the control enabled so the guest can start audio manually.
-          audio.pause();
-          audio.muted = false;
-          setIsMuted(false);
-        }
+        audio.pause();
+        audio.currentTime = 0;
+        audio.muted = false;
+        setIsMuted(false);
+        setRequiresGesture(true);
       }
     };
 
     void startPlayback();
   }, [isAvailable]);
+
+  const handleGestureStart = async () => {
+    const audio = audioRef.current;
+
+    if (!audio || !isAvailable || isOpening) {
+      return;
+    }
+
+    try {
+      audio.muted = false;
+      await audio.play();
+      setIsOpening(true);
+      setHasStarted(true);
+      setIsMuted(false);
+      window.setTimeout(() => {
+        setRequiresGesture(false);
+        setIsOpening(false);
+      }, 1350);
+    } catch {
+      setIsAvailable(false);
+      setRequiresGesture(false);
+      setIsOpening(false);
+    }
+  };
 
   const toggleMuted = async () => {
     const audio = audioRef.current;
@@ -70,6 +90,7 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
       const nextMuted = !audio.muted;
       audio.muted = nextMuted;
       setIsMuted(nextMuted);
+      setRequiresGesture(false);
     } catch {
       setIsAvailable(false);
     }
@@ -87,8 +108,33 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
           setIsAvailable(false);
           setIsMuted(false);
           setHasStarted(false);
+          setRequiresGesture(false);
         }}
       />
+      {requiresGesture ? (
+        <button
+          type="button"
+          onClick={handleGestureStart}
+          disabled={isOpening}
+          className={`fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-6 backdrop-blur-sm transition-opacity duration-[1200ms] ${isOpening ? "pointer-events-none opacity-0" : "opacity-100"}`}
+        >
+          <span className={`envelope-stage ${isOpening ? "is-opening" : ""}`}>
+            <span className="envelope-glow" />
+            <span className="envelope-card">
+              <span className="text-[10px] uppercase tracking-[0.34em] text-gold">Michael & Juliana</span>
+              <span className="mt-4 font-title text-3xl text-foreground sm:text-4xl">Toca para abrir la invitacion</span>
+              <span className="mt-4 max-w-[26ch] text-sm leading-7 text-muted sm:text-[15px]">
+                El sobre se abrira y la celebracion comenzara con nuestra cancion.
+              </span>
+            </span>
+            <span className="envelope-shell">
+              <span className="envelope-back" />
+              <span className="envelope-flap" />
+              <span className="envelope-front" />
+            </span>
+          </span>
+        </button>
+      ) : null}
       <button
         type="button"
         onClick={toggleMuted}

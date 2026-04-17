@@ -23,20 +23,20 @@ export default function Home() {
             <span>{weddingConfig.event.venue}</span>
           </div>
 
-          <div className="grid gap-7 pt-7 md:grid-cols-[1.15fr_0.85fr] md:items-end md:gap-10 md:pt-16">
-            <div className="space-y-4 md:space-y-6">
+          <div className="grid gap-7 pt-7 md:grid-cols-[1.08fr_0.92fr] md:items-start md:gap-10 md:pt-10">
+            <div className="space-y-4 text-center md:flex md:min-h-[760px] md:flex-col md:space-y-6 md:text-left">
               <p className="section-kicker fade-up text-[10px] tracking-[0.28em] sm:text-xs sm:tracking-[0.35em]">Invitacion de boda</p>
-              <h1 className="fade-up max-w-[7ch] text-[4rem] leading-[0.88] tracking-[-0.04em] text-foreground sm:max-w-none sm:text-6xl sm:tracking-normal md:text-8xl">
+              <h1 className="hero-couple-name fade-up mx-auto w-fit text-[2.9rem] leading-none tracking-[-0.03em] sm:text-6xl sm:tracking-normal md:mx-0 md:text-[4rem] md:tracking-[-0.015em] lg:text-[4.5rem]">
                 {coupleNames}
               </h1>
-              <p className="fade-up fade-delay-1 max-w-[12ch] text-[1.7rem] leading-[1.02] text-foreground/88 sm:max-w-2xl sm:text-2xl sm:leading-tight md:text-4xl">
+              <p className="fade-up fade-delay-1 mx-auto max-w-[14ch] text-[1.7rem] leading-[1.02] text-foreground/88 sm:max-w-2xl sm:text-2xl sm:leading-tight md:mx-0 md:max-w-[16ch] md:text-[2.45rem] md:leading-[1.08]">
                 {weddingConfig.hero.headline}
               </p>
-              <p className="fade-up fade-delay-2 max-w-[34ch] text-[15px] leading-7 text-muted sm:max-w-xl sm:text-base md:text-lg md:leading-8">
+              <p className="fade-up fade-delay-2 mx-auto max-w-[36ch] text-[15px] leading-7 text-muted sm:max-w-xl sm:text-base md:mx-0 md:max-w-[42ch] md:text-lg md:leading-8">
                 {weddingConfig.hero.subheadline}
               </p>
 
-              <div className="fade-up fade-delay-2 flex flex-col gap-2.5 sm:flex-row sm:gap-3">
+              <div className="fade-up fade-delay-2 flex flex-col gap-2.5 sm:flex-row sm:gap-3 md:mt-auto md:justify-start">
                 <a
                   href="#rsvp"
                   className="theme-button-primary w-full rounded-full px-5 py-3 text-center text-[10px] uppercase tracking-[0.24em] transition hover:bg-gold hover:text-black sm:w-auto sm:px-6 sm:text-xs sm:tracking-[0.3em]"
@@ -53,16 +53,16 @@ export default function Home() {
 
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 md:flex md:min-h-[760px] md:flex-col md:pl-2 md:pr-0">
               <GalleryCard
                 src={weddingConfig.gallery.images[0].src}
                 alt={weddingConfig.gallery.images[0].alt}
                 priority
-                className="min-h-[280px] sm:min-h-[380px] md:min-h-[420px]"
+                className="min-h-[280px] sm:min-h-[380px] md:min-h-[500px]"
               />
-              <div className="theme-surface-strong rounded-[1.35rem] border p-4 backdrop-blur sm:rounded-[1.75rem] sm:p-5">
+              <div className="theme-surface-strong rounded-[1.35rem] border p-4 backdrop-blur sm:rounded-[1.75rem] sm:p-5 md:mt-auto">
                 <p className="text-[10px] uppercase tracking-[0.28em] text-gold sm:text-xs sm:tracking-[0.32em]">Save the date</p>
-                <p className="mt-3 font-title text-2xl leading-tight sm:text-3xl md:text-4xl">{weddingConfig.event.displayDate}</p>
+                <p className="mt-3 font-title text-2xl leading-tight sm:text-3xl md:max-w-[12ch] md:text-[2.6rem]">{weddingConfig.event.displayDate}</p>
                 <p className="mt-2 text-sm leading-6 text-muted sm:leading-7">
                   {weddingConfig.event.time} · {weddingConfig.event.venue} · {weddingConfig.event.city}
                 </p>

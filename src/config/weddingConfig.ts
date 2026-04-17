@@ -19,19 +19,19 @@ export const weddingConfig = {
     displayDate: "14 de noviembre de 2026",
     time: "5:00 p. m.",
     startDateTime: "2026-11-14T17:00:00-05:00",
-    endDateTime: "2026-11-14T23:59:00-05:00",
+    endDateTime: "2026-11-15T01:00:00-05:00",
     venue: "Sawa Eventos",
     address: "kilometro 1, via Cali - Puerto Tejada, Cali, Valle del Cauca",
     city: "Cali, Valle del Cauca",
     dressCode: "Todos de negro",
     googleMapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Sawa+Eventos+kilometro+1+via+Cali+Puerto+Tejada+Cali+Valle+del+Cauca"
+      "https://www.google.com/maps/dir/?api=1&destination=Sawa+Eventos+kilometro+1+via+Cali+Puerto+Tejada+Cali+Valle+del+Cauca&travelmode=driving"
   },
   hero: {
     badge: "14 . 11 . 2026",
     headline: "Hay promesas que no necesitan ruido, solo una fecha para volverse hogar.",
     subheadline:
-      "Queremos compartir contigo el inicio de una celebracion que nace del amor sereno, de la eleccion diaria y de la alegria de construir juntos."
+      "Después de caminos recorridos, de silencios compartidos y de decisiones que se eligieron una y otra vez, encontramos en el otro un lugar donde permanecer. Hoy queremos abrir ese lugar y hacerlo más grande, rodeados de las personas que han sido parte de nuestra historia, de quienes han estado cerca en los momentos simples y en los más significativos. Porque este no es solo un día en el calendario, es el inicio de una etapa que queremos construir con la misma calma, intención y amor con la que hemos llegado hasta aquí."
   },
   introduction: {
     title: "Una invitacion nacida del amor tranquilo",

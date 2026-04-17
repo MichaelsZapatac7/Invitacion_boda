@@ -11,10 +11,15 @@ npm install
 ## Desarrollo local
 
 ```bash
-npm run dev
+  npm run dev
 ```
 
 Abre `http://localhost:3000`.
+
+```bash
+npx localtunnel --port 3000
+
+Abre Link de la respuesta para test movile
 
 ## Como editar el contenido
 

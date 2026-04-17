@@ -65,6 +65,7 @@ export function RsvpForm({ endpoint, method, successMessage }: RsvpFormProps) {
           <input
             name="name"
             required
+            suppressHydrationWarning
             className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
             placeholder="Tu nombre"
           />
@@ -74,6 +75,7 @@ export function RsvpForm({ endpoint, method, successMessage }: RsvpFormProps) {
           <input
             name="contact"
             required
+            suppressHydrationWarning
             className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
             placeholder="Telefono o correo"
           />
@@ -86,6 +88,7 @@ export function RsvpForm({ endpoint, method, successMessage }: RsvpFormProps) {
           <select
             name="attendance"
             required
+            suppressHydrationWarning
             className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
             defaultValue=""
           >
@@ -134,6 +137,7 @@ export function RsvpForm({ endpoint, method, successMessage }: RsvpFormProps) {
         <textarea
           name="restrictions"
           rows={4}
+          suppressHydrationWarning
           className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
           placeholder="Alergias, restricciones alimentarias o un mensaje para nosotros"
         />
