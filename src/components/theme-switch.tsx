@@ -7,12 +7,12 @@ type ThemeMode = "light" | "dark";
 const STORAGE_KEY = "wedding-theme";
 
 export function ThemeSwitch() {
-  const [theme, setTheme] = useState<ThemeMode>("light");
+  const [theme, setTheme] = useState<ThemeMode>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
-    const initialTheme = savedTheme ?? "light";
+    const initialTheme = savedTheme ?? "dark";
 
     document.documentElement.dataset.theme = initialTheme;
     setTheme(initialTheme);

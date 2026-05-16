@@ -1,163 +1,143 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { ScrollReveal } from "./scroll-reveal";
 
-type RsvpFormProps = {
-  endpoint: string;
-  method: "POST";
-  successMessage: string;
-};
+type RsvpFormProps = { endpoint: string; method: "POST"; successMessage: string };
+type Step = 1 | 2 | 3;
 
 export function RsvpForm({ endpoint, method, successMessage }: RsvpFormProps) {
+  const [step, setStep] = useState<Step>(1);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const [companionOption, setCompanionOption] = useState<"con" | "sin" | "">("");
+  const [formData, setFormData] = useState({ name: "", contact: "", attendance: "", companion: "", restrictions: "" });
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const update = (k: keyof typeof formData, v: string) => setFormData((p) => ({ ...p, [k]: v }));
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (step < 3) { setStep((s) => (s + 1) as Step); return; }
     setStatus("loading");
-    setMessage("");
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
-
     try {
-      const response = await fetch(endpoint, {
+      const res = await fetch(endpoint, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ ...formData, _subject: "Nueva confirmacion RSVP - Michael y Juliana", _language: "es" }),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        const formspreeMessage =
-          errorData?.errors?.[0]?.message ?? "No fue posible procesar el formulario.";
-
-        throw new Error(formspreeMessage);
+      if (!res.ok) {
+        const d = await res.json().catch(() => null);
+        throw new Error(d?.errors?.[0]?.message ?? "Error al procesar el formulario.");
       }
-
-      form.reset();
-      setCompanionOption("");
       setStatus("success");
       setMessage(successMessage);
-    } catch (error) {
+    } catch (err) {
       setStatus("error");
-      setMessage(
-        error instanceof Error
-          ? error.message
-          : "No fue posible enviar el formulario en este momento."
-      );
+      setMessage(err instanceof Error ? err.message : "No fue posible enviar el formulario.");
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <input type="hidden" name="_subject" value="Nueva confirmacion RSVP - Michael y Juliana" />
-      <input type="hidden" name="_language" value="es" />
-
-      <div className="grid gap-4 md:grid-cols-2 md:gap-5">
-        <label className="space-y-2 text-sm text-muted">
-          <span>Nombre completo</span>
-          <input
-            name="name"
-            required
-            suppressHydrationWarning
-            className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
-            placeholder="Tu nombre"
-          />
-        </label>
-        <label className="space-y-2 text-sm text-muted">
-          <span>Contacto</span>
-          <input
-            name="contact"
-            required
-            suppressHydrationWarning
-            className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
-            placeholder="Telefono o correo"
-          />
-        </label>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 md:gap-5">
-        <label className="space-y-2 text-sm text-muted">
-          <span>Asistencia</span>
-          <select
-            name="attendance"
-            required
-            suppressHydrationWarning
-            className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Selecciona una opcion
-            </option>
-            <option value="si">Si, estare presente</option>
-            <option value="no">No podre asistir</option>
-          </select>
-        </label>
-        <div className="space-y-2 text-sm text-muted">
-          <span>Acompanante</span>
-          <input type="hidden" name="guestOption" value={companionOption} />
-          <div className="grid grid-cols-2 gap-2.5 md:gap-3">
-            <button
-              type="button"
-              onClick={() => setCompanionOption("sin")}
-              className={`rounded-2xl border px-3 py-3 text-xs transition sm:px-4 sm:text-sm ${
-                companionOption === "sin"
-                  ? "border-gold bg-gold/10 text-foreground"
-                  : "theme-surface-strong text-muted hover:border-gold/50"
-              }`}
-            >
-              Sin acompanante
-            </button>
-            <button
-              type="button"
-              onClick={() => setCompanionOption("con")}
-              className={`rounded-2xl border px-3 py-3 text-xs transition sm:px-4 sm:text-sm ${
-                companionOption === "con"
-                  ? "border-gold bg-gold/10 text-foreground"
-                  : "theme-surface-strong text-muted hover:border-gold/50"
-              }`}
-            >
-              Con acompanante
-            </button>
-          </div>
-          <p className="text-xs leading-6 text-muted">
-            Esta seleccion permite marcar si la invitacion contempla un acompanante.
-          </p>
+  if (status === "success") {
+    return (
+      <div className="flex flex-col items-center justify-center gap-5 py-12 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-gold/40 bg-gold/10">
+          <svg viewBox="0 0 24 24" className="h-7 w-7 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
         </div>
+        <p className="font-title text-2xl text-foreground md:text-3xl">Confirmación recibida</p>
+        <p className="max-w-sm text-sm leading-7 text-muted">{message}</p>
+      </div>
+    );
+  }
+
+  const steps = ["Tus datos", "Asistencia", "Mensaje"];
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Progress */}
+      <div className="flex items-center gap-3">
+        {steps.map((label, i) => (
+          <div key={label} className="flex items-center gap-3">
+            <div className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs transition-all duration-300 ${i + 1 === step ? "border-gold bg-gold/15 text-gold" : i + 1 < step ? "border-gold/40 bg-gold/10 text-gold/60" : "border-[var(--border)] text-muted/50"}`}>
+              {i + 1 < step ? (
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 6 9 17l-5-5" /></svg>
+              ) : (i + 1)}
+            </div>
+            <span className={`hidden text-[10px] uppercase tracking-[0.2em] sm:block ${i + 1 === step ? "text-gold" : "text-muted/50"}`}>{label}</span>
+            {i < steps.length - 1 && <div className={`h-px w-8 transition-all duration-300 ${i + 1 < step ? "bg-gold/40" : "bg-[var(--border)]"}`} />}
+          </div>
+        ))}
       </div>
 
-      <label className="space-y-2 text-sm text-muted">
-        <span>Restricciones o comentarios</span>
-        <textarea
-          name="restrictions"
-          rows={4}
-          suppressHydrationWarning
-          className="theme-surface-strong w-full rounded-2xl border px-4 py-3 text-foreground outline-none transition focus:border-gold"
-          placeholder="Alergias, restricciones alimentarias o un mensaje para nosotros"
-        />
-      </label>
+      {/* Step 1: Personal info */}
+      {step === 1 && (
+        <ScrollReveal direction="fade" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="rsvp-field">
+              <span>Nombre completo</span>
+              <input required value={formData.name} onChange={(e) => update("name", e.target.value)} className="rsvp-input" placeholder="Tu nombre completo" suppressHydrationWarning />
+            </label>
+            <label className="rsvp-field">
+              <span>Contacto</span>
+              <input required value={formData.contact} onChange={(e) => update("contact", e.target.value)} className="rsvp-input" placeholder="Teléfono o correo" suppressHydrationWarning />
+            </label>
+          </div>
+        </ScrollReveal>
+      )}
 
-      <p className="text-xs leading-6 text-muted">
-        Nos encantara recibir tu respuesta. Confirmarla aqui nos ayuda a preparar cada detalle con el cuidado que este dia merece.
-      </p>
+      {/* Step 2: Attendance */}
+      {step === 2 && (
+        <ScrollReveal direction="fade" className="space-y-4">
+          <label className="rsvp-field">
+            <span>¿Asistirás?</span>
+            <select required value={formData.attendance} onChange={(e) => update("attendance", e.target.value)} className="rsvp-input" suppressHydrationWarning defaultValue="">
+              <option value="" disabled>Selecciona una opción</option>
+              <option value="si">Sí, estaré presente</option>
+              <option value="no">No podré asistir</option>
+            </select>
+          </label>
+          <div className="rsvp-field">
+            <span className="text-sm text-muted">¿Vienes con acompañante?</span>
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              {["Sin acompañante", "Con acompañante"].map((opt) => {
+                const val = opt.startsWith("Sin") ? "sin" : "con";
+                return (
+                  <button key={opt} type="button" onClick={() => update("companion", val)}
+                    className={`rsvp-choice-btn ${formData.companion === val ? "rsvp-choice-active" : ""}`}>
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </ScrollReveal>
+      )}
 
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="theme-button-primary w-full rounded-full px-6 py-3 text-xs uppercase tracking-[0.3em] transition hover:bg-gold hover:text-black disabled:cursor-wait disabled:opacity-70 sm:w-auto"
-      >
-        {status === "loading" ? "Enviando..." : "Confirma tu asistencia"}
-      </button>
+      {/* Step 3: Message */}
+      {step === 3 && (
+        <ScrollReveal direction="fade" className="space-y-4">
+          <label className="rsvp-field">
+            <span>Restricciones o mensaje para nosotros</span>
+            <textarea value={formData.restrictions} onChange={(e) => update("restrictions", e.target.value)} rows={5} className="rsvp-input resize-none" placeholder="Alergias, restricciones alimentarias o un mensaje especial..." suppressHydrationWarning />
+          </label>
+        </ScrollReveal>
+      )}
 
-      {message ? (
-        <p className={`text-sm ${status === "success" ? "text-foreground" : "text-[#8c5c2b]"}`}>{message}</p>
-      ) : null}
+      {/* Navigation */}
+      <div className="flex items-center gap-3">
+        {step > 1 && (
+          <button type="button" onClick={() => setStep((s) => (s - 1) as Step)}
+            className="rounded-full border border-[var(--border)] px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] text-muted transition hover:border-gold/40 hover:text-foreground">
+            Atrás
+          </button>
+        )}
+        <button type="submit" disabled={status === "loading"}
+          className="rsvp-submit-btn flex-1 md:flex-none">
+          {status === "loading" ? "Enviando..." : step < 3 ? "Continuar" : "Confirmar asistencia"}
+        </button>
+      </div>
+
+      {status === "error" && <p className="text-sm text-rose-400">{message}</p>}
     </form>
   );
 }

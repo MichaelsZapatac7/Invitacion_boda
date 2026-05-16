@@ -1,70 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ScrollReveal } from "./scroll-reveal";
 
-type CountdownProps = {
-  targetDate: string;
-};
+type TimeLeft = { days: string; hours: string; minutes: string; seconds: string };
+const ZERO: TimeLeft = { days: "00", hours: "00", minutes: "00", seconds: "00" };
 
-type TimeLeft = {
-  days: string;
-  hours: string;
-  minutes: string;
-  seconds: string;
-};
-
-const INITIAL_TIME_LEFT: TimeLeft = {
-  days: "00",
-  hours: "00",
-  minutes: "00",
-  seconds: "00"
-};
-
-const getTimeLeft = (targetDate: string): TimeLeft => {
-  const difference = new Date(targetDate).getTime() - new Date().getTime();
-
-  if (difference <= 0) {
-    return INITIAL_TIME_LEFT;
-  }
-
+const getTimeLeft = (target: string): TimeLeft => {
+  const diff = new Date(target).getTime() - Date.now();
+  if (diff <= 0) return ZERO;
   return {
-    days: String(Math.floor(difference / (1000 * 60 * 60 * 24))).padStart(2, "0"),
-    hours: String(Math.floor((difference / (1000 * 60 * 60)) % 24)).padStart(2, "0"),
-    minutes: String(Math.floor((difference / 1000 / 60) % 60)).padStart(2, "0"),
-    seconds: String(Math.floor((difference / 1000) % 60)).padStart(2, "0")
+    days: String(Math.floor(diff / 86400000)).padStart(3, "0"),
+    hours: String(Math.floor((diff / 3600000) % 24)).padStart(2, "0"),
+    minutes: String(Math.floor((diff / 60000) % 60)).padStart(2, "0"),
+    seconds: String(Math.floor((diff / 1000) % 60)).padStart(2, "0"),
   };
 };
 
-export function Countdown({ targetDate }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(INITIAL_TIME_LEFT);
+export function Countdown({ targetDate }: { targetDate: string }) {
+  const [t, setT] = useState<TimeLeft>(ZERO);
 
   useEffect(() => {
-    setTimeLeft(getTimeLeft(targetDate));
-
-    const interval = window.setInterval(() => {
-      setTimeLeft(getTimeLeft(targetDate));
-    }, 1000);
-
-    return () => window.clearInterval(interval);
+    setT(getTimeLeft(targetDate));
+    const id = setInterval(() => setT(getTimeLeft(targetDate)), 1000);
+    return () => clearInterval(id);
   }, [targetDate]);
 
   const items = [
-    { label: "Dias", value: timeLeft.days },
-    { label: "Horas", value: timeLeft.hours },
-    { label: "Minutos", value: timeLeft.minutes },
-    { label: "Segundos", value: timeLeft.seconds }
+    { label: "Días", value: t.days },
+    { label: "Horas", value: t.hours },
+    { label: "Minutos", value: t.minutes },
+    { label: "Segundos", value: t.seconds },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-      {items.map((item) => (
-        <div
-          key={item.label}
-          className="theme-surface-strong rounded-[1.5rem] border px-4 py-5 text-center shadow-soft backdrop-blur md:rounded-[2rem] md:px-5 md:py-6"
-        >
-          <div className="font-title text-3xl text-foreground md:text-5xl">{item.value}</div>
-          <div className="mt-2 text-[10px] uppercase tracking-[0.24em] text-muted md:text-xs md:tracking-[0.3em]">{item.label}</div>
-        </div>
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+      {items.map((item, i) => (
+        <ScrollReveal key={item.label} delay={i * 80}>
+          <div className="countdown-card group relative overflow-hidden rounded-2xl border border-[var(--border-gold)]/25 bg-surface p-5 text-center md:p-7">
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--gold-glow)]/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="relative font-title text-5xl font-light tracking-tight text-foreground md:text-7xl lg:text-8xl">
+              {item.value}
+            </div>
+            <div className="relative mt-3 text-[9px] uppercase tracking-[0.35em] text-muted md:mt-4 md:text-[10px]">
+              {item.label}
+            </div>
+            <div className="absolute bottom-0 left-1/2 h-px w-12 -translate-x-1/2 bg-gold opacity-30" />
+          </div>
+        </ScrollReveal>
       ))}
     </div>
   );
