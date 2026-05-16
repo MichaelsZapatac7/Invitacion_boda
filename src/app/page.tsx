@@ -265,28 +265,25 @@ export default function Home() {
                   </div>
                 </ScrollReveal>
 
-                {/* Visual icons */}
+                {/* Dress code illustration */}
                 <ScrollReveal delay={200} direction="fade">
-                  <div className="mt-12 flex items-end justify-center gap-8 md:gap-16">
-                    {/* Dress silhouette */}
-                    <div className="flex flex-col items-center gap-3">
-                      <svg viewBox="0 0 80 140" className="h-28 md:h-36" fill="none">
-                        <path d="M40 0 C40 0 28 8 20 20 L10 50 L0 50 L8 90 L12 140 L68 140 L72 90 L80 50 L70 50 L60 20 C52 8 40 0 40 0 Z" fill="rgba(201,169,110,0.15)" stroke="rgba(201,169,110,0.5)" strokeWidth="1" />
-                        <circle cx="40" cy="10" r="8" fill="rgba(201,169,110,0.1)" stroke="rgba(201,169,110,0.4)" strokeWidth="1" />
-                      </svg>
-                      <span className="text-[9px] uppercase tracking-[0.3em] text-gold/50">Ella</span>
+                  <div className="mx-auto mt-12 max-w-2xl">
+                    <div className="relative overflow-hidden rounded-2xl">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/images/dresscode.png"
+                        alt="Inspiración de vestuario: looks elegantes en negro para hombres y mujeres"
+                        className="w-full object-contain"
+                        style={{
+                          filter: "invert(1) brightness(0.88) contrast(0.9)",
+                          mixBlendMode: "screen",
+                          opacity: 0.82,
+                        }}
+                      />
                     </div>
-                    {/* Divider */}
-                    <div className="mb-8 h-24 w-px bg-[var(--border-gold)]/30" />
-                    {/* Suit silhouette */}
-                    <div className="flex flex-col items-center gap-3">
-                      <svg viewBox="0 0 80 140" className="h-28 md:h-36" fill="none">
-                        <circle cx="40" cy="10" r="8" fill="rgba(201,169,110,0.1)" stroke="rgba(201,169,110,0.4)" strokeWidth="1" />
-                        <path d="M40 18 L25 35 L15 30 L5 55 L20 55 L18 140 L62 140 L60 55 L75 55 L65 30 L55 35 Z" fill="rgba(201,169,110,0.15)" stroke="rgba(201,169,110,0.5)" strokeWidth="1" />
-                        <path d="M40 18 L35 40 L40 55 L45 40 Z" fill="rgba(201,169,110,0.25)" />
-                      </svg>
-                      <span className="text-[9px] uppercase tracking-[0.3em] text-gold/50">Él</span>
-                    </div>
+                    <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-gold/40">
+                      Inspiración de looks — elige tu estilo en negro
+                    </p>
                   </div>
                 </ScrollReveal>
 
