@@ -274,11 +274,6 @@ export default function Home() {
                         src="/images/dresscode.png"
                         alt="Inspiración de vestuario: looks elegantes en negro para hombres y mujeres"
                         className="w-full object-contain"
-                        style={{
-                          filter: "invert(1) brightness(0.88) contrast(0.9)",
-                          mixBlendMode: "screen",
-                          opacity: 0.82,
-                        }}
                       />
                     </div>
                     <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-gold/40">
