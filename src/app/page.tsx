@@ -1,227 +1,465 @@
+import Image from "next/image";
 import { CalendarActions } from "@/components/calendar-actions";
 import { Countdown } from "@/components/countdown";
-import { GalleryCard } from "@/components/gallery-card";
 import { MusicControl } from "@/components/music-control";
 import { RsvpForm } from "@/components/rsvp-form";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { PetalsCanvas } from "@/components/petals-canvas";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { GallerySection } from "@/components/gallery-section";
 import { weddingConfig } from "@/config/weddingConfig";
 
 export default function Home() {
-  const coupleNames = `${weddingConfig.couple.partnerOne} & ${weddingConfig.couple.partnerTwo}`;
-
   return (
-    <main className="overflow-hidden pb-14 sm:pb-16">
-      <div className="fixed right-3 top-3 z-50 flex items-center gap-2 md:right-8 md:top-8">
+    <>
+      <ScrollProgress />
+      <PetalsCanvas />
+
+      {/* Fixed Controls */}
+      <div className="fixed right-4 top-4 z-50 flex items-center gap-2 md:right-8 md:top-8">
         <MusicControl src={weddingConfig.music.trackUrl} enabled={weddingConfig.music.enabled} />
         <ThemeSwitch />
       </div>
 
-      <section className="section-shell pt-20 sm:pt-24 md:pt-10">
-        <div className="theme-surface-soft rounded-[1.75rem] border border-white/50 bg-glow px-4 py-5 shadow-soft backdrop-blur sm:px-6 sm:py-8 md:rounded-[2.5rem] md:px-10 md:py-10">
-          <div className="flex flex-col gap-2 text-[10px] uppercase tracking-[0.26em] text-muted sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-xs sm:tracking-[0.3em]">
-            <span>{weddingConfig.hero.badge}</span>
-            <span>{weddingConfig.event.venue}</span>
+      <main>
+        {/* ──────────────────────────────────────────────────────────
+            HERO — Full-screen cinematic
+        ────────────────────────────────────────────────────────── */}
+        <section className="hero-section">
+          {/* Background photo */}
+          <div className="hero-bg">
+            <Image
+              src={weddingConfig.gallery.images[0].src}
+              alt={weddingConfig.gallery.images[0].alt}
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
           </div>
 
-          <div className="grid gap-7 pt-7 md:grid-cols-[1.08fr_0.92fr] md:items-start md:gap-10 md:pt-10">
-            <div className="space-y-4 text-center md:flex md:min-h-[760px] md:flex-col md:space-y-6 md:text-left">
-              <p className="section-kicker fade-up text-[10px] tracking-[0.28em] sm:text-xs sm:tracking-[0.35em]">Invitacion de boda</p>
-              <h1 className="hero-couple-name fade-up mx-auto w-fit text-[2.9rem] leading-none tracking-[-0.03em] sm:text-6xl sm:tracking-normal md:mx-0 md:text-[4rem] md:tracking-[-0.015em] lg:text-[4.5rem]">
-                {coupleNames}
-              </h1>
-              <p className="fade-up fade-delay-1 mx-auto max-w-[14ch] text-[1.7rem] leading-[1.02] text-foreground/88 sm:max-w-2xl sm:text-2xl sm:leading-tight md:mx-0 md:max-w-[16ch] md:text-[2.45rem] md:leading-[1.08]">
-                {weddingConfig.hero.headline}
+          {/* Gradient overlay */}
+          <div className="hero-overlay" />
+
+          {/* Content */}
+          <div className="hero-content z-20">
+            {/* Date badge */}
+            <div className="fade-up mb-8 inline-block">
+              <span className="hero-date-badge">
+                <span className="gold-dot" />
+                {weddingConfig.hero.badge}
+                <span className="gold-dot" />
+              </span>
+            </div>
+
+            {/* Kicker */}
+            <p className="fade-up fade-delay-1 mb-4 section-kicker opacity-80">
+              Invitación de boda
+            </p>
+
+            {/* Script names */}
+            <h1 className="fade-up fade-delay-1 hero-script mb-6 text-[4.5rem] leading-none sm:text-[6rem] md:text-[8rem] lg:text-[10rem]">
+              {weddingConfig.couple.partnerOne} & {weddingConfig.couple.partnerTwo}
+            </h1>
+
+            {/* Ornamental lines */}
+            <div className="fade-up fade-delay-2 mb-8 flex items-center justify-center gap-4">
+              <div className="hero-ornament-line" />
+              <p className="shrink-0 text-[10px] uppercase tracking-[0.35em] text-gold/70">
+                {weddingConfig.event.city}
               </p>
-              <p className="fade-up fade-delay-2 mx-auto max-w-[36ch] text-[15px] leading-7 text-muted sm:max-w-xl sm:text-base md:mx-0 md:max-w-[42ch] md:text-lg md:leading-8">
+              <div className="hero-ornament-line" />
+            </div>
+
+            {/* Headline */}
+            <p className="fade-up fade-delay-2 mx-auto max-w-[32ch] text-base leading-8 text-foreground/70 sm:text-lg sm:leading-9 md:text-xl">
+              {weddingConfig.hero.headline}
+            </p>
+
+            {/* CTAs */}
+            <div className="fade-up fade-delay-2 mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <a
+                href="#rsvp"
+                className="rounded-full bg-gold px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] transition hover:bg-gold-light hover:shadow-gold"
+                style={{ color: "var(--bg)" }}
+              >
+                Confirmar asistencia
+              </a>
+              <a
+                href="#calendario"
+                className="rounded-full border border-[var(--border-gold)] px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-gold backdrop-blur transition hover:bg-gold/10"
+              >
+                Guardar la fecha
+              </a>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="hero-scroll-indicator z-20">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-gold/50">Desliza</span>
+            <div className="hero-scroll-line" />
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            POETIC QUOTE
+        ────────────────────────────────────────────────────────── */}
+        <section className="section-shell py-24 md:py-32">
+          <ScrollReveal direction="fade">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="quote-ornament mb-8">
+                <span className="text-xs uppercase tracking-[0.35em] text-gold/60">Nuestra promesa</span>
+              </div>
+              <blockquote className="font-title text-2xl leading-relaxed text-foreground/85 sm:text-3xl md:text-4xl md:leading-relaxed">
+                &ldquo;{weddingConfig.hero.headline}&rdquo;
+              </blockquote>
+              <p className="mx-auto mt-8 max-w-2xl text-sm leading-8 text-muted sm:text-base sm:leading-9">
                 {weddingConfig.hero.subheadline}
               </p>
-
-              <div className="fade-up fade-delay-2 flex flex-col gap-2.5 sm:flex-row sm:gap-3 md:mt-auto md:justify-start">
-                <a
-                  href="#rsvp"
-                  className="theme-button-primary w-full rounded-full px-5 py-3 text-center text-[10px] uppercase tracking-[0.24em] transition hover:bg-gold hover:text-black sm:w-auto sm:px-6 sm:text-xs sm:tracking-[0.3em]"
-                >
-                  Confirmar asistencia
-                </a>
-                <a
-                  href="#calendario"
-                  className="theme-button-secondary w-full rounded-full border px-5 py-3 text-center text-[10px] uppercase tracking-[0.22em] transition hover:border-gold hover:bg-gold/10 sm:w-auto sm:px-6 sm:text-xs sm:tracking-[0.3em]"
-                >
-                  Agregar al calendario
-                </a>
-              </div>
-
             </div>
+          </ScrollReveal>
+        </section>
 
-            <div className="space-y-4 md:flex md:min-h-[760px] md:flex-col md:pl-2 md:pr-0">
-              <GalleryCard
-                src={weddingConfig.gallery.images[0].src}
-                alt={weddingConfig.gallery.images[0].alt}
-                priority
-                className="min-h-[280px] sm:min-h-[380px] md:min-h-[500px]"
-              />
-              <div className="theme-surface-strong rounded-[1.35rem] border p-4 backdrop-blur sm:rounded-[1.75rem] sm:p-5 md:mt-auto">
-                <p className="text-[10px] uppercase tracking-[0.28em] text-gold sm:text-xs sm:tracking-[0.32em]">Save the date</p>
-                <p className="mt-3 font-title text-2xl leading-tight sm:text-3xl md:max-w-[12ch] md:text-[2.6rem]">{weddingConfig.event.displayDate}</p>
-                <p className="mt-2 text-sm leading-6 text-muted sm:leading-7">
-                  {weddingConfig.event.time} · {weddingConfig.event.venue} · {weddingConfig.event.city}
+        {/* ──────────────────────────────────────────────────────────
+            COUNTDOWN
+        ────────────────────────────────────────────────────────── */}
+        <section className="section-shell pb-24 md:pb-32">
+          <div className="rounded-2xl border border-[var(--border)] bg-surface p-8 backdrop-blur md:rounded-3xl md:p-12">
+            <ScrollReveal>
+              <div className="mb-10 grid gap-2 md:grid-cols-2 md:items-end">
+                <div>
+                  <p className="section-kicker">Cuenta regresiva</p>
+                  <h2 className="section-title mt-3">Cada día nos acerca a este momento.</h2>
+                </div>
+                <p className="text-sm leading-7 text-muted md:text-right md:text-base">
+                  {weddingConfig.event.displayDate} · {weddingConfig.event.time}
                 </p>
               </div>
+            </ScrollReveal>
+            <Countdown targetDate={weddingConfig.event.startDateTime} />
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            INTRODUCTION
+        ────────────────────────────────────────────────────────── */}
+        <section className="section-shell pb-24 md:pb-32">
+          <div className="grid gap-10 md:grid-cols-[0.75fr_1.25fr] md:gap-16">
+            <ScrollReveal direction="left">
+              <div>
+                <p className="section-kicker">Introducción</p>
+                <h2 className="section-title mt-4">{weddingConfig.introduction.title}</h2>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal direction="right" delay={120}>
+              <p className="text-base leading-9 text-muted md:text-lg md:leading-10">
+                {weddingConfig.introduction.body}
+              </p>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            STORY TIMELINE
+        ────────────────────────────────────────────────────────── */}
+        <section className="section-shell pb-24 md:pb-32">
+          <ScrollReveal>
+            <div className="mb-12 text-center">
+              <p className="section-kicker">{weddingConfig.story.title}</p>
+              <h2 className="section-title mt-4">Tres capítulos, una historia</h2>
+            </div>
+          </ScrollReveal>
+
+          <div className="timeline-container space-y-8 md:space-y-12">
+            {weddingConfig.story.chapters.map((chapter, i) => (
+              <ScrollReveal key={chapter.title} delay={i * 120}>
+                <div className={`timeline-item ${i % 2 === 1 ? "md:text-right" : ""}`}>
+                  {/* Left content (even items on desktop) */}
+                  <div className={`hidden md:block ${i % 2 === 0 ? "order-1" : "order-3"}`}>
+                    {i % 2 === 1 && (
+                      <div className="timeline-card ml-auto max-w-sm">
+                        <p className="mb-1 text-xs uppercase tracking-[0.3em] text-gold">
+                          0{i + 1}
+                        </p>
+                        <h3 className="mb-3 font-title text-2xl">{chapter.title}</h3>
+                        <p className="text-sm leading-7 text-muted">{chapter.text}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Center dot */}
+                  <div className="order-2 flex flex-col items-center">
+                    <div className="timeline-dot" />
+                  </div>
+
+                  {/* Right content */}
+                  <div className={`order-3 ${i % 2 === 1 ? "md:order-1" : ""}`}>
+                    {i % 2 === 0 && (
+                      <div className="timeline-card hidden max-w-sm md:block">
+                        <p className="mb-1 text-xs uppercase tracking-[0.3em] text-gold">
+                          0{i + 1}
+                        </p>
+                        <h3 className="mb-3 font-title text-2xl">{chapter.title}</h3>
+                        <p className="text-sm leading-7 text-muted">{chapter.text}</p>
+                      </div>
+                    )}
+                    {/* Mobile: always show */}
+                    <div className="timeline-card md:hidden">
+                      <p className="mb-1 text-xs uppercase tracking-[0.3em] text-gold">
+                        0{i + 1}
+                      </p>
+                      <h3 className="mb-3 font-title text-2xl">{chapter.title}</h3>
+                      <p className="text-sm leading-7 text-muted">{chapter.text}</p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            GALLERY
+        ────────────────────────────────────────────────────────── */}
+        <section className="section-shell pb-24 md:pb-32">
+          <ScrollReveal>
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="section-kicker">Galería</p>
+                <h2 className="section-title mt-4">{weddingConfig.gallery.title}</h2>
+              </div>
+              <p className="max-w-xs text-sm leading-7 text-muted">
+                Momentos capturados de nuestra historia juntos.
+              </p>
+            </div>
+          </ScrollReveal>
+          <GallerySection />
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            DRESS CODE — "Todos de Negro"
+        ────────────────────────────────────────────────────────── */}
+        <section className="dress-code-section mb-24 md:mb-32">
+          <div className="section-shell">
+            <div className="overflow-hidden rounded-2xl border border-[var(--border-gold)]/20 md:rounded-3xl">
+              {/* Dark header */}
+              <div className="bg-[var(--bg-2)] px-8 py-16 text-center md:px-16 md:py-24">
+                <ScrollReveal direction="fade">
+                  <p className="section-kicker mb-6 text-gold/70">Dress Code</p>
+                </ScrollReveal>
+                <ScrollReveal delay={80}>
+                  <h2 className="font-title text-5xl leading-tight text-foreground sm:text-6xl md:text-8xl lg:text-9xl">
+                    Todos de<br />
+                    <span className="italic text-gold">Negro</span>
+                  </h2>
+                </ScrollReveal>
+                <ScrollReveal delay={160} direction="fade">
+                  <div className="mx-auto mt-10 max-w-2xl">
+                    <p className="text-sm leading-8 text-muted sm:text-base sm:leading-9">
+                      Hemos elegido el negro como expresión de elegancia unificada.
+                      Queremos que cada persona que nos acompañe sea parte de una imagen
+                      cohesionada, sobria y hermosa. Desde el negro más profundo hasta
+                      los tonos carbón y pizarra — toda la paleta oscura es bienvenida.
+                    </p>
+                  </div>
+                </ScrollReveal>
+
+                {/* Visual icons */}
+                <ScrollReveal delay={200} direction="fade">
+                  <div className="mt-12 flex items-end justify-center gap-8 md:gap-16">
+                    {/* Dress silhouette */}
+                    <div className="flex flex-col items-center gap-3">
+                      <svg viewBox="0 0 80 140" className="h-28 md:h-36" fill="none">
+                        <path d="M40 0 C40 0 28 8 20 20 L10 50 L0 50 L8 90 L12 140 L68 140 L72 90 L80 50 L70 50 L60 20 C52 8 40 0 40 0 Z" fill="rgba(201,169,110,0.15)" stroke="rgba(201,169,110,0.5)" strokeWidth="1" />
+                        <circle cx="40" cy="10" r="8" fill="rgba(201,169,110,0.1)" stroke="rgba(201,169,110,0.4)" strokeWidth="1" />
+                      </svg>
+                      <span className="text-[9px] uppercase tracking-[0.3em] text-gold/50">Ella</span>
+                    </div>
+                    {/* Divider */}
+                    <div className="mb-8 h-24 w-px bg-[var(--border-gold)]/30" />
+                    {/* Suit silhouette */}
+                    <div className="flex flex-col items-center gap-3">
+                      <svg viewBox="0 0 80 140" className="h-28 md:h-36" fill="none">
+                        <circle cx="40" cy="10" r="8" fill="rgba(201,169,110,0.1)" stroke="rgba(201,169,110,0.4)" strokeWidth="1" />
+                        <path d="M40 18 L25 35 L15 30 L5 55 L20 55 L18 140 L62 140 L60 55 L75 55 L65 30 L55 35 Z" fill="rgba(201,169,110,0.15)" stroke="rgba(201,169,110,0.5)" strokeWidth="1" />
+                        <path d="M40 18 L35 40 L40 55 L45 40 Z" fill="rgba(201,169,110,0.25)" />
+                      </svg>
+                      <span className="text-[9px] uppercase tracking-[0.3em] text-gold/50">Él</span>
+                    </div>
+                  </div>
+                </ScrollReveal>
+
+                {/* Notes */}
+                <ScrollReveal delay={240} direction="fade">
+                  <div className="mx-auto mt-12 grid max-w-2xl gap-4 sm:grid-cols-3">
+                    {["Negro profundo", "Carbón y pizarra", "Accesorios libres"].map((note) => (
+                      <div key={note} className="rounded-xl border border-[var(--border-gold)]/20 bg-surface/50 px-4 py-3">
+                        <p className="text-xs uppercase tracking-[0.2em] text-gold/70">{note}</p>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollReveal>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="theme-surface grid gap-6 rounded-[1.75rem] border px-4 py-5 shadow-soft md:grid-cols-[0.8fr_1.2fr] md:gap-8 md:px-10 md:py-10">
-          <div>
-            <p className="section-kicker">Cuenta regresiva</p>
-            <h2 className="section-title mt-4">Cada dia nos acerca a este momento.</h2>
-          </div>
-          <Countdown targetDate={weddingConfig.event.startDateTime} />
-        </div>
-      </section>
-
-      <section className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="grid gap-8 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
-          <div>
-            <p className="section-kicker">Introduccion</p>
-            <h2 className="section-title mt-4">{weddingConfig.introduction.title}</h2>
-          </div>
-          <p className="max-w-3xl text-base leading-8 text-muted md:text-lg md:leading-9">{weddingConfig.introduction.body}</p>
-        </div>
-      </section>
-
-      <section className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="theme-inverse rounded-[1.75rem] border px-4 py-7 shadow-soft md:rounded-[2.5rem] md:px-10 md:py-10">
-          <p className="section-kicker text-gold/90">{weddingConfig.story.title}</p>
-          <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 md:grid-cols-3">
-            {weddingConfig.story.chapters.map((chapter) => (
-              <article key={chapter.title} className="theme-inverse-card rounded-[1.5rem] border p-5 md:rounded-[2rem] md:p-6">
-                <h3 className="text-2xl md:text-3xl">{chapter.title}</h3>
-                <p className="theme-inverse-muted mt-4 text-sm leading-7">{chapter.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="section-kicker">Galeria</p>
-            <h2 className="section-title mt-4">{weddingConfig.gallery.title}</h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-muted">{weddingConfig.gallery.description}</p>
-        </div>
-
-        <div className="mt-8 grid auto-rows-[220px] gap-4 sm:auto-rows-[260px] md:mt-10 md:auto-rows-[280px] md:gap-5 md:grid-cols-12">
-          <GalleryCard
-            src={weddingConfig.gallery.images[1].src}
-            alt={weddingConfig.gallery.images[1].alt}
-            className="md:col-span-7 md:row-span-2"
-          />
-          <GalleryCard
-            src={weddingConfig.gallery.images[2].src}
-            alt={weddingConfig.gallery.images[2].alt}
-            className="md:col-span-5"
-          />
-          <GalleryCard
-            src={weddingConfig.gallery.images[3].src}
-            alt={weddingConfig.gallery.images[3].alt}
-            className="md:col-span-5"
-          />
-          <GalleryCard
-            src={weddingConfig.gallery.images[4].src}
-            alt={weddingConfig.gallery.images[4].alt}
-            className="md:col-span-7"
-          />
-        </div>
-      </section>
-
-      <section className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="theme-surface grid gap-6 rounded-[1.75rem] border px-4 py-7 shadow-soft md:grid-cols-[0.95fr_1.05fr] md:gap-8 md:px-10 md:py-10">
-          <div className="space-y-5">
-            <p className="section-kicker">Detalles</p>
-            <h2 className="section-title">{weddingConfig.details.title}</h2>
-            <p className="text-sm leading-7 text-muted md:text-base md:leading-8">{weddingConfig.details.notes}</p>
-            <a
-              href={weddingConfig.event.googleMapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="theme-button-primary inline-flex w-full justify-center rounded-full px-6 py-3 text-[11px] uppercase tracking-[0.26em] transition hover:bg-gold hover:text-black sm:w-auto sm:text-xs sm:tracking-[0.3em]"
-            >
-              Abrir Google Maps
-            </a>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              { label: "Fecha", value: weddingConfig.event.displayDate },
-              { label: "Hora", value: weddingConfig.event.time },
-              { label: "Lugar", value: weddingConfig.event.venue },
-              { label: "Dress code", value: weddingConfig.event.dressCode },
-              { label: "Direccion", value: weddingConfig.event.address },
-              { label: "Ciudad", value: weddingConfig.event.city }
-            ].map((detail) => (
-              <div key={detail.label} className="theme-surface-strong rounded-[1.5rem] border p-4 md:rounded-[1.75rem] md:p-5">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-gold md:text-xs md:tracking-[0.28em]">{detail.label}</p>
-                <p className="mt-3 text-base leading-7 text-foreground md:mt-4 md:text-lg md:leading-8">{detail.value}</p>
+        {/* ──────────────────────────────────────────────────────────
+            EVENT DETAILS
+        ────────────────────────────────────────────────────────── */}
+        <section className="section-shell pb-24 md:pb-32">
+          <div className="grid gap-6 md:grid-cols-[1fr_1.2fr] md:gap-8">
+            <ScrollReveal direction="left">
+              <div className="rounded-2xl border border-[var(--border)] bg-surface p-8 md:rounded-3xl md:p-10">
+                <p className="section-kicker mb-4">Detalles</p>
+                <h2 className="section-title mb-5">{weddingConfig.details.title}</h2>
+                <p className="mb-6 text-sm leading-7 text-muted md:text-base md:leading-8">
+                  {weddingConfig.details.notes}
+                </p>
+                <a
+                  href={weddingConfig.event.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2.5 rounded-full border border-[var(--border-gold)] px-6 py-3 text-[11px] uppercase tracking-[0.24em] text-gold transition hover:bg-gold/10"
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M12 21C12 21 4 13.5 4 8.5a8 8 0 0 1 16 0c0 5-8 12.5-8 12.5Z" />
+                    <circle cx="12" cy="8.5" r="2.5" />
+                  </svg>
+                  Abrir Google Maps
+                </a>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </ScrollReveal>
 
-      <section id="rsvp" className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="theme-surface grid gap-6 rounded-[1.75rem] border px-4 py-7 shadow-soft md:grid-cols-[0.8fr_1.2fr] md:gap-8 md:px-10 md:py-10">
-          <div>
-            <p className="section-kicker">RSVP</p>
-            <h2 className="section-title mt-4">{weddingConfig.rsvp.title}</h2>
-            <p className="mt-4 max-w-md text-sm leading-7 text-muted md:mt-5 md:text-base md:leading-8">
-              {weddingConfig.rsvp.description}
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              {[
+                { label: "Fecha", value: weddingConfig.event.displayDate },
+                { label: "Hora", value: weddingConfig.event.time },
+                { label: "Lugar", value: weddingConfig.event.venue },
+                { label: "Dress Code", value: weddingConfig.event.dressCode },
+                { label: "Dirección", value: weddingConfig.event.address },
+                { label: "Ciudad", value: weddingConfig.event.city },
+              ].map((d, i) => (
+                <ScrollReveal key={d.label} delay={i * 60}>
+                  <div className="group h-full rounded-xl border border-[var(--border)] bg-surface p-5 transition-all duration-300 hover:border-[var(--border-gold)]/40 hover:bg-surface-strong md:rounded-2xl md:p-6">
+                    <p className="mb-3 text-[9px] uppercase tracking-[0.3em] text-gold">{d.label}</p>
+                    <p className="text-sm leading-6 text-foreground md:text-base md:leading-7">{d.value}</p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            RSVP
+        ────────────────────────────────────────────────────────── */}
+        <section id="rsvp" className="section-shell pb-24 md:pb-32">
+          <div className="overflow-hidden rounded-2xl border border-[var(--border)] md:rounded-3xl">
+            <div className="grid md:grid-cols-[0.8fr_1.2fr]">
+              {/* Left — info */}
+              <div className="border-b border-[var(--border)] bg-surface p-8 md:border-b-0 md:border-r md:p-10">
+                <ScrollReveal direction="left">
+                  <p className="section-kicker mb-4">RSVP</p>
+                  <h2 className="section-title mb-5">{weddingConfig.rsvp.title}</h2>
+                  <p className="text-sm leading-7 text-muted md:text-base md:leading-8">
+                    {weddingConfig.rsvp.description}
+                  </p>
+
+                  {/* Event mini-card */}
+                  <div className="mt-8 rounded-xl border border-[var(--border-gold)]/25 bg-gold/5 p-5">
+                    <p className="mb-1 text-xs uppercase tracking-[0.25em] text-gold/70">El gran día</p>
+                    <p className="font-title text-2xl text-foreground">{weddingConfig.event.displayDate}</p>
+                    <p className="mt-1 text-sm text-muted">{weddingConfig.event.time} · {weddingConfig.event.venue}</p>
+                  </div>
+                </ScrollReveal>
+              </div>
+
+              {/* Right — form */}
+              <div className="bg-surface/50 p-8 md:p-10">
+                <ScrollReveal direction="right" delay={100}>
+                  <RsvpForm
+                    endpoint={weddingConfig.rsvp.endpoint}
+                    method={weddingConfig.rsvp.method}
+                    successMessage={weddingConfig.rsvp.successMessage}
+                  />
+                </ScrollReveal>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            CALENDAR
+        ────────────────────────────────────────────────────────── */}
+        <section id="calendario" className="section-shell pb-24 md:pb-32">
+          <ScrollReveal>
+            <div className="rounded-2xl border border-[var(--border-gold)]/20 bg-surface px-8 py-12 text-center md:rounded-3xl md:px-16 md:py-16">
+              <p className="section-kicker mb-4">Agenda</p>
+              <h2 className="section-title mb-5">{weddingConfig.calendar.title}</h2>
+              <p className="mx-auto mb-10 max-w-xl text-sm leading-7 text-muted md:text-base md:leading-8">
+                {weddingConfig.calendar.description}
+              </p>
+              <CalendarActions />
+            </div>
+          </ScrollReveal>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            CLOSING — Cinematic finale
+        ────────────────────────────────────────────────────────── */}
+        <section className="closing-section section-shell pb-24 md:pb-32">
+          <div className="rounded-2xl border border-[var(--border-gold)]/20 md:rounded-3xl">
+            {/* Main closing content */}
+            <div className="px-8 py-20 text-center md:px-16 md:py-28">
+              <ScrollReveal direction="fade">
+                <div className="quote-ornament mb-10">
+                  <span className="text-xs uppercase tracking-[0.3em] text-gold/50">Con amor</span>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={80}>
+                <p className="font-title text-2xl leading-relaxed text-foreground/80 sm:text-3xl md:text-4xl md:leading-relaxed lg:text-5xl lg:leading-relaxed">
+                  &ldquo;{weddingConfig.closing.quote}&rdquo;
+                </p>
+              </ScrollReveal>
+
+              <ScrollReveal delay={160} direction="fade">
+                <p className="mx-auto mt-8 max-w-2xl text-sm leading-8 text-muted md:text-base md:leading-9">
+                  {weddingConfig.closing.farewell}
+                </p>
+              </ScrollReveal>
+
+              <ScrollReveal delay={240} direction="fade">
+                <div className="mt-12">
+                  <div className="quote-ornament mb-8">
+                    <span className="text-xs uppercase tracking-[0.25em] text-gold/40">14 · 11 · 2026</span>
+                  </div>
+                  <p className="font-script text-5xl text-gold sm:text-6xl md:text-7xl" style={{ fontFamily: "var(--font-script)" }}>
+                    {weddingConfig.couple.signature}
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────────────
+            FOOTER
+        ────────────────────────────────────────────────────────── */}
+        <footer className="section-shell pb-16">
+          <div className="gold-divider mb-8" />
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between">
+            <p className="text-[9px] uppercase tracking-[0.3em] text-muted">
+              {weddingConfig.footer.text}
+            </p>
+            <p className="font-script text-xl text-gold/60" style={{ fontFamily: "var(--font-script)" }}>
+              M & J
             </p>
           </div>
-          <RsvpForm
-            endpoint={weddingConfig.rsvp.endpoint}
-            method={weddingConfig.rsvp.method}
-            successMessage={weddingConfig.rsvp.successMessage}
-          />
-        </div>
-      </section>
-
-      <section id="calendario" className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="theme-inverse rounded-[1.75rem] border px-4 py-7 shadow-soft md:rounded-[2.5rem] md:px-10 md:py-10">
-          <p className="section-kicker text-gold/90">Calendario</p>
-          <div className="mt-4 flex flex-col gap-6 md:mt-5 md:flex-row md:items-end md:justify-between md:gap-8">
-            <div className="max-w-2xl">
-              <h2 className="section-title" style={{ color: "var(--inverse-foreground)" }}>{weddingConfig.calendar.title}</h2>
-              <p className="theme-inverse-muted mt-4 text-sm leading-7 md:mt-5 md:text-base md:leading-8">{weddingConfig.calendar.description}</p>
-            </div>
-            <CalendarActions />
-          </div>
-        </div>
-      </section>
-
-      <section className="section-shell pt-14 sm:pt-20 md:pt-24">
-        <div className="theme-surface rounded-[1.75rem] border px-4 py-7 text-center shadow-soft md:rounded-[2.5rem] md:px-10 md:py-12">
-          <p className="font-title text-3xl leading-tight sm:text-4xl md:text-6xl">
-            “{weddingConfig.closing.quote}”
-          </p>
-          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-muted md:mt-6 md:text-base md:leading-8">
-            {weddingConfig.closing.farewell}
-          </p>
-          <p className="mt-6 font-title text-2xl text-gold sm:text-3xl md:mt-8 md:text-4xl">
-            {weddingConfig.couple.signature}
-          </p>
-        </div>
-      </section>
-
-      <footer className="section-shell pt-12 md:pt-16">
-        <div className="border-t border-line py-6 text-center text-[10px] uppercase tracking-[0.22em] text-muted sm:text-xs sm:tracking-[0.28em] md:py-8">
-          {weddingConfig.footer.text}
-        </div>
-      </footer>
-    </main>
+        </footer>
+      </main>
+    </>
   );
 }
