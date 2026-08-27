@@ -5,9 +5,9 @@ export type WeddingImage = {
 
 export const weddingConfig = {
   seo: {
-    title: "Michael & Juliana | Invitacion de boda",
+    title: "Michael & Juliana | Invitación de boda",
     description:
-      "Una invitacion de boda elegante, minimalista y lista para compartir con quienes hacen parte de nuestra historia."
+      "Una invitación de boda elegante, minimalista y lista para compartir con quienes hacen parte de nuestra historia."
   },
   couple: {
     partnerOne: "Michael",
@@ -17,11 +17,14 @@ export const weddingConfig = {
   event: {
     date: "2026-11-14",
     displayDate: "14 de noviembre de 2026",
-    time: "5:00 p. m.",
-    startDateTime: "2026-11-14T17:00:00-05:00",
+    // Hora pública de citación que ve el invitado. La ceremonia inicia
+    // aproximadamente a las 4:00 p. m., pero pedimos llegar desde las 3:30 p. m.
+    time: "3:30 p. m.",
+    // Inicio del evento en zona horaria de Colombia (America/Bogota, UTC-5 fijo).
+    startDateTime: "2026-11-14T15:30:00-05:00",
     endDateTime: "2026-11-15T01:00:00-05:00",
     venue: "Sawa Eventos",
-    address: "kilometro 1, via Cali - Puerto Tejada, Cali, Valle del Cauca",
+    address: "kilómetro 1, vía Cali - Puerto Tejada, Cali, Valle del Cauca",
     city: "Cali, Valle del Cauca",
     dressCode: "Todos de negro",
     googleMapsUrl:
@@ -34,23 +37,23 @@ export const weddingConfig = {
       "Después de caminos recorridos, de silencios compartidos y de decisiones que se eligieron una y otra vez, encontramos en el otro un lugar donde permanecer. Hoy queremos abrir ese lugar y hacerlo más grande, rodeados de las personas que han sido parte de nuestra historia, de quienes han estado cerca en los momentos simples y en los más significativos. Porque este no es solo un día en el calendario, es el inicio de una etapa que queremos construir con la misma calma, intención y amor con la que hemos llegado hasta aquí."
   },
   introduction: {
-    title: "Una invitacion nacida del amor tranquilo",
+    title: "Una invitación nacida del amor tranquilo",
     body:
-      "Creemos en los vinculos que se sostienen con ternura, presencia y verdad. Nuestro matrimonio no sera un gesto fugaz, sino la confirmacion de una historia construida con paciencia, belleza y una profunda gratitud por el camino compartido. Nos emocionaria que nos acompanaras en este dia."
+      "Creemos en los vínculos que se sostienen con ternura, presencia y verdad. Nuestro matrimonio no será un gesto fugaz, sino la confirmación de una historia construida con paciencia, belleza y una profunda gratitud por el camino compartido. Nos emocionaría que nos acompañaras en este día."
   },
   story: {
     title: "Nuestra historia",
     chapters: [
       {
         title: "El inicio",
-        text: "Todo comenzo con una conversacion sencilla que, sin buscarlo, abrio un espacio de confianza. Desde entonces, descubrimos que habia una calma especial en coincidir."
+        text: "Todo comenzó con una conversación sencilla que, sin buscarlo, abrió un espacio de confianza. Desde entonces, descubrimos que había una calma especial en coincidir."
       },
       {
-        title: "La eleccion diaria",
-        text: "Con el tiempo entendimos que el amor tambien se escribe en lo cotidiano: en la paciencia, en la escucha, en los pequenos cuidados y en la alegria de seguir eligiendonos."
+        title: "La elección diaria",
+        text: "Con el tiempo entendimos que el amor también se escribe en lo cotidiano: en la paciencia, en la escucha, en los pequeños cuidados y en la alegría de seguir eligiéndonos."
       },
       {
-        title: "El nuevo capitulo",
+        title: "El nuevo capítulo",
         text: "Ahora damos un paso que honra lo vivido y abraza lo que viene. Queremos celebrar este comienzo rodeados de las personas que han sido luz en nuestra historia."
       }
     ]
@@ -58,7 +61,7 @@ export const weddingConfig = {
   gallery: {
     title: "Fragmentos de nosotros",
     description:
-      "Si aun no agregas tus fotos, la galeria mostrara composiciones limpias y elegantes sin romper el diseno.",
+      "Si aún no agregas tus fotos, la galería mostrará composiciones limpias y elegantes sin romper el diseño.",
     images: [
       { src: "/images/hero-main.JPG", alt: "Michael y Juliana en un retrato principal" },
       { src: "/images/couple-1.JPG", alt: "Michael y Juliana compartiendo una mirada" },
@@ -68,14 +71,14 @@ export const weddingConfig = {
     ] satisfies WeddingImage[]
   },
   music: {
-    title: "Nuestra cancion",
+    title: "Nuestra canción",
     trackUrl: "/audio/wedding-song.mp3",
     enabled: true
   },
   details: {
-    title: "Detalles del dia",
+    title: "Detalles del día",
     notes:
-      "Hemos imaginado una celebracion sobria, luminosa y profundamente intima. Tu presencia hara parte de ese equilibrio perfecto."
+      "Hemos imaginado una celebración sobria, luminosa y profundamente íntima. Tu presencia hará parte de ese equilibrio perfecto. Te esperamos desde las 3:30 p. m."
   },
   rsvp: {
     title: "Confirma tu asistencia",
@@ -84,30 +87,30 @@ export const weddingConfig = {
     endpoint: "https://formspree.io/f/xpqkwbzw",
     method: "POST" as const,
     successMessage:
-      "Gracias por responder. Tu confirmacion fue recibida y podremos organizar cada detalle con mayor cuidado."
+      "Gracias por responder. Tu confirmación fue recibida y podremos organizar cada detalle con mayor cuidado."
   },
   calendar: {
     title: "Guarda la fecha",
     description:
-      "Reserva este momento en tu calendario y acompananos en una celebracion pensada para recordar."
+      "Reserva este momento en tu calendario y acompáñanos en una celebración pensada para recordar."
   },
   closing: {
     quote:
       "El amor que perdura no se impone; se queda, sostiene y transforma silenciosamente todo lo que toca.",
     farewell:
-      "Nos haria muy felices compartir este dia contigo y celebrar juntos el comienzo de nuestra vida en matrimonio."
+      "Nos haría muy felices compartir este día contigo y celebrar juntos el comienzo de nuestra vida en matrimonio."
   },
   footer: {
-    text: "Con amor, gratitud y la alegria de lo que esta por comenzar."
+    text: "Con amor, gratitud y la alegría de lo que está por comenzar."
   }
 } as const;
 
 export const calendarEventConfig = {
   title: "Boda de Michael y Juliana",
   description:
-    "Acompananos a celebrar nuestra boda en Sawa Eventos. Nos encantaria compartir contigo este momento.",
+    "Acompáñanos a celebrar nuestra boda en Sawa Eventos. Nos encantaría compartir contigo este momento.",
   startDateTime: weddingConfig.event.startDateTime,
   endDateTime: weddingConfig.event.endDateTime,
   location:
-    "Sawa Eventos, kilometro 1, via Cali - Puerto Tejada, Cali, Valle del Cauca"
+    "Sawa Eventos, kilómetro 1, vía Cali - Puerto Tejada, Cali, Valle del Cauca"
 } as const;

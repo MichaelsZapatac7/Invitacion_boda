@@ -122,9 +122,9 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
             <span className="envelope-glow" />
             <span className="envelope-card">
               <span className="text-[10px] uppercase tracking-[0.34em] text-gold">Michael & Juliana</span>
-              <span className="mt-4 font-title text-3xl text-foreground sm:text-4xl">Toca para abrir la invitacion</span>
+              <span className="mt-4 font-title text-3xl text-foreground sm:text-4xl">Toca para abrir la invitación</span>
               <span className="mt-4 max-w-[26ch] text-sm leading-7 text-muted sm:text-[15px]">
-                El sobre se abrira y la celebracion comenzara con nuestra cancion.
+                El sobre se abrirá y la celebración comenzará con nuestra canción.
               </span>
             </span>
             <span className="envelope-shell">

@@ -22,7 +22,7 @@ export function RsvpForm({ endpoint, method, successMessage }: RsvpFormProps) {
       const res = await fetch(endpoint, {
         method,
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ ...formData, _subject: "Nueva confirmacion RSVP - Michael y Juliana", _language: "es" }),
+        body: JSON.stringify({ ...formData, _subject: "Nueva confirmación RSVP - Michael y Juliana", _language: "es" }),
       });
       if (!res.ok) {
         const d = await res.json().catch(() => null);
