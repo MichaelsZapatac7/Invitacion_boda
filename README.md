@@ -69,16 +69,69 @@ Si el archivo no existe o falla, el botón mostrará que la música no está dis
 
 ## RSVP
 
-El formulario actual envía la confirmación al endpoint definido en `weddingConfig.rsvp.endpoint` (hoy una URL de Formspree). También existe un endpoint local de ejemplo en [`src/app/api/rsvp/route.ts`](src/app/api/rsvp/route.ts).
+Hay **dos** flujos de confirmación:
 
-Ese endpoint local es un placeholder funcional para empezar. Puedes adaptarlo para:
+1. **General (Formspree):** el formulario de la página pública (`/`) envía a `weddingConfig.rsvp.endpoint` (hoy Formspree). Sirve como respaldo para quien llegue sin enlace personalizado.
+2. **Personalizado por grupo (Supabase):** cada invitado recibe un enlace único `/i/{token}` con su nombre, sus cupos reservados y validación real de límites. Es el sistema principal.
 
-- guardar respuestas en una base de datos
-- enviar correos
-- reenviar datos a un CRM
-- integrarlo con Zapier, Make o cualquier backend
+### Invitaciones personalizadas (Supabase)
 
-Si prefieres Formspree, cambia `weddingConfig.rsvp.endpoint` por tu URL de Formspree y conserva la misma interfaz.
+**Modelo de datos** (`supabase/migrations/0001_invitations.sql`):
+
+- `invitation_groups`: un grupo por enlace — `token`, `display_name`, `max_attendees`, `allow_plus_one`, `invitation_type`, `status`.
+- `guests`: invitados nominados de un grupo (para familias).
+- `rsvps`: **una** respuesta por grupo (se actualiza, no se duplica) — asistencia, número de personas, invitados seleccionados, acompañante, dieta y mensaje.
+
+RLS está activo y **sin políticas públicas**: solo el servidor (clave `service_role`) accede a los datos, así la lista de invitados nunca llega al navegador.
+
+**Puesta en marcha:**
+
+1. Crea un proyecto en [supabase.com](https://supabase.com).
+2. Ejecuta el SQL de `supabase/migrations/0001_invitations.sql` en el editor SQL de Supabase.
+3. Copia `.env.example` a `.env.local` y completa:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY` (Settings → API → `service_role`, **secreto**)
+   - `NEXT_PUBLIC_SITE_URL` (tu dominio, para los enlaces)
+   - `ADMIN_DASHBOARD_KEY` (clave privada del panel)
+4. En Vercel, agrega esas mismas variables de entorno.
+
+Sin estas variables, la app **sigue funcionando**: la página pública usa el formulario de Formspree y los enlaces `/i/{token}` muestran una pantalla elegante de “invitación no válida”.
+
+### Cargar invitados (CSV)
+
+Prepara un CSV como [`scripts/guests.example.csv`](scripts/guests.example.csv):
+
+```csv
+displayName,maxAttendees,allowPlusOne,invitationType,guests
+Juan Pérez,1,false,individual,
+Carlos y Andrea,2,false,pareja,
+Familia Rodríguez,4,false,familia,Juan;Laura;Mateo;Sofía
+Daniel Gómez,2,true,individual,
+```
+
+Impórtalo (genera token + URL de cada invitación; reejecutar es seguro, actualiza en vez de duplicar):
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... NEXT_PUBLIC_SITE_URL=https://tu-dominio \
+npm run import:guests scripts/guests.example.csv
+```
+
+El comando imprime cada enlace `/i/{token}` listo para enviar por WhatsApp.
+
+### Reglas de cupos
+
+- `maxAttendees` limita cuántas personas pueden confirmar. La validación ocurre en el **frontend y el backend**: aunque manipulen la petición, el servidor recorta al máximo permitido.
+- `allowPlusOne = true` habilita un campo “Nombre de tu acompañante” cuando el grupo confirma más de un cupo. Si es `false`, no se puede agregar un nombre arbitrario.
+- Para familias, `guests` permite marcar exactamente quién asistirá.
+- Declinar no pide acompañantes; permite dejar un mensaje.
+
+### Panel de administración
+
+`/admin?key=TU_CLAVE` (usa `ADMIN_DASHBOARD_KEY`). Muestra totales (invitaciones, personas potenciales, confirmados, personas confirmadas, no asisten, pendientes) y la tabla de respuestas con acompañante, dieta y mensaje. Mantén el enlace privado.
+
+### Editar una confirmación
+
+Si el invitado vuelve a abrir su enlace, ve “Tu asistencia está confirmada” con el botón **Actualizar respuesta**. Una invitación = un RSVP.
 
 ## Calendario
 
