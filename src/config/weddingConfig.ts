@@ -60,11 +60,11 @@ export const weddingConfig = {
     description:
       "Si aun no agregas tus fotos, la galeria mostrara composiciones limpias y elegantes sin romper el diseno.",
     images: [
-      { src: "/images/hero-main.jpg", alt: "Michael y Juliana en un retrato principal" },
-      { src: "/images/couple-1.jpg", alt: "Michael y Juliana compartiendo una mirada" },
-      { src: "/images/couple-2.jpg", alt: "Michael y Juliana caminando juntos" },
-      { src: "/images/couple-3.jpg", alt: "Michael y Juliana en un momento especial" },
-      { src: "/images/couple-4.jpg", alt: "Michael y Juliana celebrando su historia" }
+      { src: "/images/hero-main.JPG", alt: "Michael y Juliana en un retrato principal" },
+      { src: "/images/couple-1.JPG", alt: "Michael y Juliana compartiendo una mirada" },
+      { src: "/images/couple-2.JPG", alt: "Michael y Juliana caminando juntos" },
+      { src: "/images/couple-3.JPG", alt: "Michael y Juliana en un momento especial" },
+      { src: "/images/couple-4.JPG", alt: "Michael y Juliana celebrando su historia" }
     ] satisfies WeddingImage[]
   },
   music: {
