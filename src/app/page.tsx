@@ -8,6 +8,7 @@ import { PetalsCanvas } from "@/components/petals-canvas";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { GallerySection } from "@/components/gallery-section";
+import { TimelineProgressLine } from "@/components/timeline-progress-line";
 import { weddingConfig } from "@/config/weddingConfig";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
     <>
       <ScrollProgress />
       <PetalsCanvas />
+      <div className="grain-overlay" aria-hidden="true" />
 
       {/* Fixed Controls */}
       <div className="fixed right-4 top-4 z-50 flex items-center gap-2 md:right-8 md:top-8">
@@ -172,6 +174,7 @@ export default function Home() {
           </ScrollReveal>
 
           <div className="timeline-container space-y-8 md:space-y-12">
+            <TimelineProgressLine />
             {weddingConfig.story.chapters.map((chapter, i) => (
               <ScrollReveal key={chapter.title} delay={i * 120}>
                 <div className={`timeline-item ${i % 2 === 1 ? "md:text-right" : ""}`}>

@@ -41,12 +41,19 @@ export function PetalsCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const prefersReduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
     resize();
     window.addEventListener("resize", resize);
+
+    // Fewer particles on small screens; a calm night, not a storm.
+    const baseCount = window.innerWidth < 640 ? 42 : 80;
 
     const create = (): Glitter => ({
       x: Math.random() * canvas.width,
@@ -65,7 +72,7 @@ export function PetalsCanvas() {
     });
 
     // Seed initial particles distributed across screen
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < baseCount; i++) {
       const p = create();
       p.y = Math.random() * canvas.height;
       p.opacityPhase = Math.random() * Math.PI * 2;
@@ -120,6 +127,20 @@ export function PetalsCanvas() {
       ctx.restore();
     };
 
+    // Reduced motion: paint a calm, static starfield once and stop.
+    if (prefersReduced) {
+      particlesRef.current.forEach((p) => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.globalAlpha = p.opacity;
+        if (p.type === 0) drawDot(ctx, p, 1);
+        else if (p.type === 1) drawDiamond(ctx, p, 1);
+        else drawCross(ctx, p, 1);
+        ctx.restore();
+      });
+      return () => window.removeEventListener("resize", resize);
+    }
+
     let last = 0;
     const animate = (ts: number) => {
       const dt = Math.min((ts - last) / 16, 3);
@@ -157,8 +178,20 @@ export function PetalsCanvas() {
     };
     animFrameRef.current = requestAnimationFrame(animate);
 
+    // Pause the loop when the tab is hidden to save battery/CPU.
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animFrameRef.current);
+      } else {
+        last = 0;
+        animFrameRef.current = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(animFrameRef.current);
     };
   }, []);
