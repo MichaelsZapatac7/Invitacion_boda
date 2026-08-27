@@ -92,6 +92,11 @@ html[data-theme="light"] {
 
 html { scroll-behavior: smooth; }
 
+/* Los estados iniciales de scroll-reveal (translateX) pueden sobresalir del
+   viewport antes de revelarse; clip evita el scroll horizontal sin romper
+   position: fixed ni el scroll vertical. */
+html, body { overflow-x: clip; }
+
 body {
   background-color: var(--bg);
   color: var(--fg);
