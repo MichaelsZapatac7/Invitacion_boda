@@ -1,0 +1,5 @@
+displayName,maxAttendees,allowPlusOne,invitationType,guests
+Juan Pérez,1,false,individual,
+Carlos y Andrea,2,false,pareja,
+Familia Rodríguez,4,false,familia,Juan;Laura;Mateo;Sofía
+Daniel Gómez,2,true,individual,

@@ -30,7 +30,7 @@ export function ThemeSwitch() {
     <button
       type="button"
       onClick={toggleTheme}
-      aria-label="Cambiar tema de la invitacion"
+      aria-label="Cambiar tema de la invitación"
       className="theme-surface-strong inline-flex items-center gap-1 rounded-full border px-1.5 py-1.5 shadow-soft backdrop-blur md:gap-3 md:px-2 md:py-2"
     >
       <span

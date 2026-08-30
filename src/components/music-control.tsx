@@ -7,6 +7,23 @@ type MusicControlProps = {
   enabled: boolean;
 };
 
+const TARGET_VOLUME = 0.7;
+
+// Gentle volume ramp so the song never starts at full blast.
+const fadeIn = (audio: HTMLAudioElement, ms = 1400) => {
+  const steps = 28;
+  const stepMs = ms / steps;
+  let i = 0;
+  audio.volume = 0;
+  const id = window.setInterval(() => {
+    i += 1;
+    const t = i / steps;
+    // ease-out curve
+    audio.volume = Math.min(TARGET_VOLUME, TARGET_VOLUME * (1 - Math.pow(1 - t, 2)));
+    if (i >= steps) window.clearInterval(id);
+  }, stepMs);
+};
+
 export function MusicControl({ src, enabled }: MusicControlProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -29,12 +46,13 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
     }
 
     audio.loop = true;
-    audio.volume = 0.7;
+    audio.volume = TARGET_VOLUME;
 
     const startPlayback = async () => {
       try {
         audio.muted = false;
         await audio.play();
+        fadeIn(audio);
         setIsMuted(false);
         setHasStarted(true);
         setRequiresGesture(false);
@@ -60,6 +78,7 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
     try {
       audio.muted = false;
       await audio.play();
+      fadeIn(audio);
       setIsOpening(true);
       setHasStarted(true);
       setIsMuted(false);
@@ -121,10 +140,31 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
           <span className={`envelope-stage ${isOpening ? "is-opening" : ""}`}>
             <span className="envelope-glow" />
             <span className="envelope-card">
-              <span className="text-[10px] uppercase tracking-[0.34em] text-gold">Michael & Juliana</span>
-              <span className="mt-4 font-title text-3xl text-foreground sm:text-4xl">Toca para abrir la invitacion</span>
-              <span className="mt-4 max-w-[26ch] text-sm leading-7 text-muted sm:text-[15px]">
-                El sobre se abrira y la celebracion comenzara con nuestra cancion.
+              <span className="fade-up text-[10px] uppercase tracking-[0.36em] text-gold">Nos casamos</span>
+              <span
+                className="fade-up fade-delay-1 mt-2 text-5xl leading-none text-foreground sm:text-6xl"
+                style={{ fontFamily: "var(--font-script)" }}
+              >
+                M &amp; J
+              </span>
+              <span className="fade-up fade-delay-2 mt-4 flex items-center gap-3 text-[11px] tracking-[0.4em] text-gold/80">
+                <span className="h-px w-7 bg-gradient-to-r from-transparent to-gold/60" />
+                14 · 11 · 2026
+                <span className="h-px w-7 bg-gradient-to-l from-transparent to-gold/60" />
+              </span>
+              <span className="fade-up fade-delay-3 mt-4 max-w-[26ch] text-sm leading-7 text-muted sm:text-[15px]">
+                Toca para abrir la invitación. El sobre se abrirá y sonará nuestra canción.
+              </span>
+              <span
+                className="fade-up fade-delay-4 mt-6 inline-flex items-center gap-2 rounded-full bg-gold px-6 py-2.5 text-[11px] uppercase tracking-[0.28em] shadow-gold"
+                style={{ color: "var(--bg)" }}
+              >
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4h16v16H4z" opacity="0" />
+                  <path d="m3 7 9 6 9-6" />
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                </svg>
+                Abrir invitación
               </span>
             </span>
             <span className="envelope-shell">

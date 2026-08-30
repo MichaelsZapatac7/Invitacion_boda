@@ -23,7 +23,7 @@ export function GalleryCard({ src, alt, priority = false, className = "" }: Gall
           <div>
             <p className="font-title text-2xl text-foreground/85 md:text-3xl">Michael & Juliana</p>
             <p className="mt-2 max-w-xs text-sm leading-6 text-muted">
-              Agrega esta imagen en <span className="font-medium text-foreground">{src}</span> para personalizar la galeria.
+              Agrega esta imagen en <span className="font-medium text-foreground">{src}</span> para personalizar la galería.
             </p>
           </div>
         </div>

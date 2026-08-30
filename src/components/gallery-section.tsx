@@ -12,10 +12,12 @@ interface GalleryImage {
 }
 
 export function GallerySection() {
-  const [lightbox, setLightbox] = useState<GalleryImage | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [errors, setErrors] = useState<Record<number, boolean>>({});
 
   const images = weddingConfig.gallery.images.slice(1); // skip hero image
+  // Only images that actually loaded can be opened/navigated in the lightbox.
+  const openableImages: GalleryImage[] = images.filter((_, i) => !errors[i]);
 
   const gridClasses = [
     "md:col-span-7 md:row-span-2",
@@ -32,7 +34,11 @@ export function GallerySection() {
             <button
               type="button"
               className="group relative h-full w-full overflow-hidden rounded-2xl border border-[var(--border-gold)]/20 bg-surface focus:outline-none"
-              onClick={() => !errors[i] && setLightbox(img)}
+              onClick={() => {
+                if (errors[i]) return;
+                const openIdx = openableImages.findIndex((im) => im.src === img.src);
+                if (openIdx >= 0) setLightboxIndex(openIdx);
+              }}
               aria-label={`Ver foto: ${img.alt}`}
             >
               {errors[i] ? (
@@ -60,7 +66,14 @@ export function GallerySection() {
           </ScrollReveal>
         ))}
       </div>
-      {lightbox && <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />}
+      {lightboxIndex !== null && openableImages.length > 0 && (
+        <Lightbox
+          images={openableImages}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={setLightboxIndex}
+        />
+      )}
     </>
   );
 }
