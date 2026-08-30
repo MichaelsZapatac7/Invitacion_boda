@@ -263,6 +263,31 @@ html[data-theme="light"] .hero-overlay {
   line-height: 1;
 }
 
+/* Hero: nombres apilados en tres lineas (Michael / & / Juliana).
+   El h1 pasa a columna flex para que el corte sea intencional y no
+   dependa del ancho disponible, que partia el nombre de forma
+   desbalanceada. Los tamanos van en clamp() para conservar el
+   comportamiento responsive sin media queries adicionales. */
+.hero-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.95;
+}
+
+.hero-names .hero-name {
+  display: block;
+  font-size: clamp(3.5rem, 13vw, 9rem);
+}
+
+.hero-names .hero-amp {
+  display: block;
+  font-size: clamp(1.75rem, 5.5vw, 3.75rem);
+  line-height: 1;
+  margin-top: 0.06em;
+  margin-bottom: 0.06em;
+}
+
 .hero-scroll-indicator {
   position: absolute;
   bottom: 2.5rem;
