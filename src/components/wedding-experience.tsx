@@ -53,8 +53,10 @@ export function WeddingExperience({ rsvpSlot }: WeddingExperienceProps) {
               </span>
             </div>
             <p className="fade-up fade-delay-1 mb-4 section-kicker opacity-80">Invitación de boda</p>
-            <h1 className="fade-up fade-delay-1 hero-script mb-6 text-[4.5rem] leading-none sm:text-[6rem] md:text-[8rem] lg:text-[10rem]">
-              {weddingConfig.couple.partnerOne} & {weddingConfig.couple.partnerTwo}
+            <h1 className="fade-up fade-delay-1 hero-script hero-names mb-6">
+              <span className="hero-name">{weddingConfig.couple.partnerOne}</span>
+              <span className="hero-amp">&amp;</span>
+              <span className="hero-name">{weddingConfig.couple.partnerTwo}</span>
             </h1>
             <div className="fade-up fade-delay-2 mb-8 flex items-center justify-center gap-4">
               <div className="hero-ornament-line" />

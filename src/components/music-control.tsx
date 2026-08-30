@@ -153,7 +153,7 @@ export function MusicControl({ src, enabled }: MusicControlProps) {
                 <span className="h-px w-7 bg-gradient-to-l from-transparent to-gold/60" />
               </span>
               <span className="fade-up fade-delay-3 mt-4 max-w-[26ch] text-sm leading-7 text-muted sm:text-[15px]">
-                Toca para abrir la invitación. El sobre se abrirá y sonará nuestra canción.
+                Toca el sobre y deja que nuestra canción te dé la bienvenida.
               </span>
               <span
                 className="fade-up fade-delay-4 mt-6 inline-flex items-center gap-2 rounded-full bg-gold px-6 py-2.5 text-[11px] uppercase tracking-[0.28em] shadow-gold"
