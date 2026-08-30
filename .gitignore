@@ -15,3 +15,11 @@ pnpm-debug.log*
 
 # TypeScript incremental build info
 *.tsbuildinfo
+
+# Herramientas locales de agentes (no forman parte de la app)
+.claude/
+.agents/
+skills-lock.json
+
+# Logs locales del servidor de desarrollo
+*.log

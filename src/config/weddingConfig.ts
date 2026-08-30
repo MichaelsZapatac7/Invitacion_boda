@@ -23,12 +23,12 @@ export const weddingConfig = {
     // Inicio del evento en zona horaria de Colombia (America/Bogota, UTC-5 fijo).
     startDateTime: "2026-11-14T15:30:00-05:00",
     endDateTime: "2026-11-15T01:00:00-05:00",
-    venue: "Sawa Eventos",
+    venue: "Centro de eventos campestre Inti Raimi (Hacienda Sawa Eventos)",
     address: "kilómetro 1, vía Cali - Puerto Tejada, Cali, Valle del Cauca",
     city: "Cali, Valle del Cauca",
     dressCode: "Todos de negro",
     googleMapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Sawa+Eventos+kilometro+1+via+Cali+Puerto+Tejada+Cali+Valle+del+Cauca&travelmode=driving"
+      "https://www.google.com/maps/dir/?api=1&destination=Centro+de+eventos+campestre+Inti+Raimi+Hacienda+Sawa+Eventos+kilometro+1+via+Cali+Puerto+Tejada+Cali+Valle+del+Cauca&travelmode=driving"
   },
   hero: {
     badge: "14 . 11 . 2026",
@@ -108,9 +108,9 @@ export const weddingConfig = {
 export const calendarEventConfig = {
   title: "Boda de Michael y Juliana",
   description:
-    "Acompáñanos a celebrar nuestra boda en Sawa Eventos. Nos encantaría compartir contigo este momento.",
+    "Acompáñanos a celebrar nuestra boda en el Centro de eventos campestre Inti Raimi (Hacienda Sawa Eventos). Nos encantaría compartir contigo este momento.",
   startDateTime: weddingConfig.event.startDateTime,
   endDateTime: weddingConfig.event.endDateTime,
   location:
-    "Sawa Eventos, kilómetro 1, vía Cali - Puerto Tejada, Cali, Valle del Cauca"
+    "Centro de eventos campestre Inti Raimi (Hacienda Sawa Eventos), kilómetro 1, vía Cali - Puerto Tejada, Cali, Valle del Cauca"
 } as const;
