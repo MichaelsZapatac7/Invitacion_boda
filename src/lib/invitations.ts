@@ -9,20 +9,36 @@ import {
 } from "./supabase";
 
 /**
- * Lee una invitación por su token. Devuelve solo los datos de ESE grupo
- * (nunca la lista completa de invitados). null si no existe o no hay backend.
+ * Lee una invitación por su token interno o por su slug público.
+ * Los enlaces existentes con token siguen funcionando, mientras que URLs como
+ * /i/anabeiba pueden resolver el mismo grupo mediante public_slug.
  */
 export async function getInvitationByToken(
-  token: string
+  identifier: string
 ): Promise<InvitationData | null> {
   const supabase = getServiceClient();
   if (!supabase) return null;
 
-  const { data: group, error } = await supabase
+  const normalizedIdentifier = identifier.trim();
+
+  // Mantener compatibilidad total con los enlaces largos ya generados.
+  let { data: group, error } = await supabase
     .from("invitation_groups")
     .select("*")
-    .eq("token", token)
+    .eq("token", normalizedIdentifier)
     .maybeSingle();
+
+  // Si no es un token, intentar el alias público legible.
+  if (!group && !error) {
+    const slugResult = await supabase
+      .from("invitation_groups")
+      .select("*")
+      .eq("public_slug", normalizedIdentifier.toLowerCase())
+      .maybeSingle();
+
+    group = slugResult.data;
+    error = slugResult.error;
+  }
 
   if (error || !group) return null;
 
