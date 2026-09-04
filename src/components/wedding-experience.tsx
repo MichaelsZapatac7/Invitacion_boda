@@ -10,6 +10,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { GallerySection } from "@/components/gallery-section";
 import { TimelineProgressLine } from "@/components/timeline-progress-line";
+import { GiftEnvelopeSection } from "@/components/gift-envelope-section";
 import { weddingConfig } from "@/config/weddingConfig";
 
 type WeddingExperienceProps = {
@@ -379,6 +380,9 @@ export function WeddingExperience({ rsvpSlot }: WeddingExperienceProps) {
             </div>
           </div>
         </section>
+
+        {/* ── GIFT / LLUVIA DE SOBRES ── */}
+        <GiftEnvelopeSection />
 
         {/* ── FOOTER ── */}
         <footer className="section-shell safe-bottom pb-16">
